@@ -56,10 +56,14 @@ class Catalog:
         return alt, az
 
 
-    def flux()
+    def flux():
         self.flux = np.asarray(max_frame.int_flux_151)
         return self.flux
 
 
 class Antenna:
-    def beam()
+
+    def __init__(self):
+        pass
+    def beam(self):
+        pass
