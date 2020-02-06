@@ -24,7 +24,17 @@ class Catalog:
     def __init__(self, frame):
         self.frame = frame
     
-    def reduce_data(self):
+    def flux(self):
+        """
+        Picks out the fluxes in the gleam catalog in the 151 MHz range
+        also picks out and stores the right ascension and declination of the sources in units of degrees
+
+        Parameters:
+        none so far, but am open to suggestions
+
+        returns:
+        gleam flux in 151 MHz range as an np.ndarray
+        """
         star_number = 3072
         frame = self.frame
         new_frame = [col for col in frame.columns if ("int_flux" in col or "RAJ2000" in col or "DEJ2000" in col and "err" not in col)]
@@ -42,7 +52,8 @@ class Catalog:
 
         self.RA = np.asarray(frame.RAJ2000)
         self.DEC= np.asarray(frame.DEJ2000)
-        self.flux_gleam_151 = np.asarray(max_frame.int_flux_151)
+        self.flux = np.asarray(max_frame.int_flux_151)
+        return self.flux
 
 
     def altaz(self, time, rad = False, lat=37.875*np.pi/180):
@@ -77,10 +88,6 @@ class Catalog:
     
         return alt, az
 
-
-    def flux():
-        self.flux = np.asarray(max_frame.int_flux_151)
-        return self.flux
 
 
 class Antenna:
