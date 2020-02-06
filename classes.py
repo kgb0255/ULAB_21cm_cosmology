@@ -44,6 +44,19 @@ class Catalog:
 
 
     def altaz(time, rad = False, lat=37.875*np.pi/180):
+        """
+        Calculates Altitude and Azimuth at given times, centered at HERA
+    
+        parameters: 
+        time = lst in radian
+        ra = Right ascension of the star in degrees or radians
+        dec = Declination of the star in degrees or radians
+        rad = True if RA and DEC are in radian or False if RA and DEC are in degree
+    
+        returns:
+        Returns alt, and az all in radian
+    
+        """
         ra = self.RA
         dec = self.DEC
         PI = np.pi
