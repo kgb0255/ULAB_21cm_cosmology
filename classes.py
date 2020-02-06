@@ -24,8 +24,9 @@ class Catalog:
     def __init__(self, frame):
         self.frame = frame
     
-    def reduce_data(self)
+    def reduce_data(self):
         star_number = 3072
+        frame = self.frame
         new_frame = [col for col in frame.columns if ("int_flux" in col or "RAJ2000" in col or "DEJ2000" in col and "err" not in col)]
         new_frame = frame[new_frame]
 
@@ -41,6 +42,7 @@ class Catalog:
 
         self.RA = np.asarray(frame.RAJ2000)
         self.DEC= np.asarray(frame.DEJ2000)
+        self.flux_gleam_151 = np.asarray(max_frame.int_flux_151)
 
 
     def altaz(time, rad = False, lat=37.875*np.pi/180):
