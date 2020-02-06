@@ -1,10 +1,5 @@
-# Here is a file where I will be testing how to use github
-# I have added the file to git so now it is being tracked
-#print("hello world")
-
-# now I need to find a way to upload this file to git 
-
-# did it work?
+# need to make data reduction a separate method, so that 
+#   flux() is not needed to organize data
 
 '''
 make a catalog class: methods:
@@ -21,6 +16,12 @@ import numpy as np
 
 
 class Catalog:
+    """
+    Data type that will take care of the data reduction and repetitive calculations of things such as the alt/az and flux of the sources
+
+    Methods:
+    flux, altaz
+    """
     def __init__(self, frame):
         self.frame = frame
     
@@ -65,7 +66,10 @@ class Catalog:
         ra = Right ascension of the star in degrees or radians
         dec = Declination of the star in degrees or radians
         rad = True if RA and DEC are in radian or False if RA and DEC are in degree
+        
         Note: time and RA/DEC need to have the same size
+        
+        Note 2: time array needs to have index of 307455 to work for now. Important!
     
         returns:
         Returns alt, and az all in radian
