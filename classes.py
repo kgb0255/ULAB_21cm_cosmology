@@ -45,7 +45,7 @@ class Catalog:
         self.flux_gleam_151 = np.asarray(max_frame.int_flux_151)
 
 
-    def altaz(time, rad = False, lat=37.875*np.pi/180):
+    def altaz(self, time, rad = False, lat=37.875*np.pi/180):
         """
         Calculates Altitude and Azimuth at given times, centered at HERA
     
@@ -54,6 +54,7 @@ class Catalog:
         ra = Right ascension of the star in degrees or radians
         dec = Declination of the star in degrees or radians
         rad = True if RA and DEC are in radian or False if RA and DEC are in degree
+        Note: time and RA/DEC need to have the same size
     
         returns:
         Returns alt, and az all in radian
