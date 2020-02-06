@@ -23,6 +23,8 @@ import numpy as np
 class Catalog:
     def __init__(self, frame):
         self.frame = frame
+    
+    def reduce_data(self)
         star_number = 3072
         new_frame = [col for col in frame.columns if ("int_flux" in col or "RAJ2000" in col or "DEJ2000" in col and "err" not in col)]
         new_frame = frame[new_frame]
