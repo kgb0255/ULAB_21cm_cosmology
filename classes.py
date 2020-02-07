@@ -31,16 +31,19 @@ class Catalog:
 
         Creates: 
         self.frame as Pandas DataFrame type
+        self.RA = right ascencion from J2000 in degrees as numpy.ndarray
+        self.DEC = declination from J2000 in degrees as numpy.ndarray
         """
         df = frame
         new_frame = [col for col in df.columns if ('int_flux' in col or "RAJ2000" in col or "DEJ2000" in col) and "err" not in col]
         self.frame = frame[new_frame]
+        self.RA = np.asarray(frame.RAJ2000)
+        self.DEC = np.asarray(frame.DEJ2000)
 
     def flux(self):
         """
         Picks out the fluxes in the gleam catalog in the 151 MHz range
-        also picks out and stores the right ascension and declination of the sources in units of degrees
-
+        
         Parameters:
         none so far, but am open to suggestions
 
@@ -62,8 +65,6 @@ class Catalog:
         max_frame = new_frame.iloc[len(new_frame)-star_number:]
         self.frame = max_frame
 
-        self.RA = np.asarray(frame.RAJ2000)
-        self.DEC= np.asarray(frame.DEJ2000)
         self.flux = np.asarray(max_frame.int_flux_151)
         return self.flux
 
