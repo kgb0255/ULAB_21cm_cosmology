@@ -23,8 +23,19 @@ class Catalog:
     flux, altaz
     """
     def __init__(self, frame):
-        self.frame = frame
-    
+        """
+        Initializes the Catalog and makes a new Pandas DataFrame containing the Right Ascension and Declination as well as all the fluxes
+        
+        Parameters:
+        frame = Pandas DataFrame
+
+        Creates: 
+        self.frame as Pandas DataFrame type
+        """
+        df = frame
+        new_frame = [col for col in df.columns if ('int_flux' in col or "RAJ2000" in col or "DEJ2000" in col) and "err" not in col]
+        self.frame = frame[new_frame]
+
     def flux(self):
         """
         Picks out the fluxes in the gleam catalog in the 151 MHz range
