@@ -5,7 +5,6 @@
 make a catalog class: methods:
 - def altaz()
 - def flux()
-- def phase()
 
 class antenna
 - def beam()
@@ -104,12 +103,3 @@ class Catalog:
         az = np.arctan2(np.sin(hour_array)*np.cos(dec), np.cos(hour_array)*np.cos(dec)*np.sin(lat)-np.sin(dec)*np.cos(lat))+PI
     
         return alt, az
-
-
-
-class Antenna:
-
-    def __init__(self):
-        pass
-    def beam(self):
-        pass
