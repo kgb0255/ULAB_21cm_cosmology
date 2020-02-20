@@ -39,18 +39,19 @@ class Catalog:
         self.RA = np.asarray(frame.RAJ2000)
         self.DEC = np.asarray(frame.DEJ2000)
 
-    def flux(self, num_stars):
+    def flux(self, frequency, num_stars): # try to make this frquency dependant either with an assert or with a try/catch
         """
         Picks out the brightest fluxes in the gleam catalog in the 151 MHz range
         
         Parameters:
+        frequency = the frequency of fluxes to be returned 
         num_stars = the number of stars in your sample
 
         Creates:
         self.flux = largest fluxes in the sky as np.ndarray
 
         returns:
-        gleam flux in 151 MHz range as an np.ndarray
+        gleam flux specified range as an np.ndarray
         """
         star_number = num_stars
         new_frame = self.frame
@@ -64,9 +65,13 @@ class Catalog:
         # create a frame with num_stars largest fluxes
         max_frame = new_frame.iloc[len(new_frame)-star_number:]
         
-        # create self.flux variable to be numpy array containing largest fluxes
-        self.flux = np.asarray(max_frame.int_flux_151)
-        return self.flux
+        # create self.flux variable for specified frequency to be numpy array containing largest fluxes
+        try:
+            self.flux = np.asarray(getattr(max_frame,frequency))
+            return self.flux
+        except:
+            print("Here are the valid frequencies:")
+            print(np.asarray(max_frame.columns)) 
 
 
     def altaz(self, time, rad = False, lat=37.875*np.pi/180):
