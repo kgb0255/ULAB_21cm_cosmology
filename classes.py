@@ -39,7 +39,7 @@ class Catalog:
         self.RA = np.asarray(frame.RAJ2000)
         self.DEC = np.asarray(frame.DEJ2000)
 
-    def flux(self, frequency, num_stars): # try to make this frquency dependant either with an assert or with a try/catch
+    def flux(self, frequency, num_stars): 
         """
         Picks out the brightest fluxes in the gleam catalog in the 151 MHz range
         
