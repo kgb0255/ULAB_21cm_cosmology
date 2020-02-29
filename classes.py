@@ -73,7 +73,6 @@ class Catalog:
             print("Here are the valid frequencies:")
             print(np.asarray(max_frame.columns)) 
 
-
     def altaz(self, time, rad = False, lat=37.875*np.pi/180):
         """
         Calculates Altitude and Azimuth at given times, centered at HERA
@@ -108,3 +107,6 @@ class Catalog:
         az = np.arctan2(np.sin(hour_array)*np.cos(dec), np.cos(hour_array)*np.cos(dec)*np.sin(lat)-np.sin(dec)*np.cos(lat))+PI
     
         return alt, az
+
+    def position_vector(self):
+        pass
