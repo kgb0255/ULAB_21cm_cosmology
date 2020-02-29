@@ -31,8 +31,8 @@ class Catalog:
 
         Creates: 
         self.frame as Pandas DataFrame type
-        self.RA = right ascencion from J2000 in degrees as numpy.ndarray
-        self.DEC = declination from J2000 in degrees as numpy.ndarray
+        self.RA = right ascencion from J2000 in radians as numpy.ndarray
+        self.DEC = declination from J2000 in radians as numpy.ndarray
         """
         df = frame
         new_frame = [col for col in df.columns if ('int_flux' in col or "RAJ2000" in col or "DEJ2000" in col) and "err" not in col]
@@ -54,10 +54,9 @@ class Catalog:
         
         #pick out the right ascension and declination for the stars with the largest fluxes
         frame = self.frame
-        self.RA = np.asarray(frame.RAJ2000)
-        self.DEC = np.asarray(frame.DEJ2000)
+        self.RA = np.asarray(frame.RAJ2000) * np.pi/180
+        self.DEC = np.asarray(frame.DEJ2000)* np.pi/180
         
-
     def flux(self, frequency): 
         """
         Picks out the brightest fluxes in the gleam catalog in the frequency range
@@ -80,7 +79,7 @@ class Catalog:
             print("Here are the valid frequencies:")
             print(np.asarray(max_frame.columns)) 
 
-    def altaz(self, time, rad = False, lat=37.875*np.pi/180):
+    def altaz(self, time, rad = True, lat=37.875*np.pi/180):
         """
         Calculates Altitude and Azimuth at given times, centered at HERA
     
@@ -116,4 +115,4 @@ class Catalog:
         return alt, az
 
     def position_vector(self):
-        pass
+        pass 
