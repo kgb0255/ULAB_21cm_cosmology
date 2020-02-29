@@ -21,12 +21,13 @@ class Catalog:
     Methods:
     flux, altaz
     """
-    def __init__(self, frame):
+    def __init__(self, frame, num_stars):
         """
         Initializes the Catalog and makes a new Pandas DataFrame containing the Right Ascension and Declination as well as all the fluxes
         
         Parameters:
         frame = Pandas DataFrame
+        num_stars = the number of stars in your sample
 
         Creates: 
         self.frame as Pandas DataFrame type
@@ -35,26 +36,12 @@ class Catalog:
         """
         df = frame
         new_frame = [col for col in df.columns if ('int_flux' in col or "RAJ2000" in col or "DEJ2000" in col) and "err" not in col]
-        self.frame = frame[new_frame]
-        self.RA = np.asarray(frame.RAJ2000)
-        self.DEC = np.asarray(frame.DEJ2000)
+        new_frame = frame[new_frame]
+        #self.RA = np.asarray(frame.RAJ2000)
+        #self.DEC = np.asarray(frame.DEJ2000)
 
-    def flux(self, frequency, num_stars): 
-        """
-        Picks out the brightest fluxes in the gleam catalog in the 151 MHz range
-        
-        Parameters:
-        frequency = the frequency of fluxes to be returned 
-        num_stars = the number of stars in your sample
-
-        Creates:
-        self.flux = largest fluxes in the sky as np.ndarray
-
-        returns:
-        gleam flux specified range as an np.ndarray
-        """
         star_number = num_stars
-        new_frame = self.frame
+        #new_frame = self.frame
         
         # drop the NaN values that we don't want
         new_frame = new_frame.dropna(axis=0, how="any")
@@ -63,8 +50,28 @@ class Catalog:
         new_frame = new_frame.sort_values(by="int_flux_wide")
 
         # create a frame with num_stars largest fluxes
-        max_frame = new_frame.iloc[len(new_frame)-star_number:]
+        self.frame = new_frame.iloc[len(new_frame)-star_number:]
         
+        #pick out the right ascension and declination for the stars with the largest fluxes
+        frame = self.frame
+        self.RA = np.asarray(frame.RAJ2000)
+        self.DEC = np.asarray(frame.DEJ2000)
+        
+
+    def flux(self, frequency): 
+        """
+        Picks out the brightest fluxes in the gleam catalog in the frequency range
+        
+        Parameters:
+        frequency = the frequency of fluxes to be returned 
+
+        Creates:
+        self.flux = largest fluxes in the sky as np.ndarray
+
+        returns:
+        gleam flux specified range as an np.ndarray
+        """
+        max_frame = self.frame
         # create self.flux variable for specified frequency to be numpy array containing largest fluxes
         try:
             self.flux = np.asarray(getattr(max_frame,frequency))
