@@ -89,10 +89,6 @@ class Catalog:
         dec = Declination of the star in degrees or radians
         rad = True if RA and DEC are in radian or False if RA and DEC are in degree
         
-        Note: time and RA/DEC need to have the same size
-        
-        Note 2: time array needs to have index of 307455 to work for now. Important!
-    
         returns:
         Returns alt, and az all in radian
     
@@ -114,5 +110,19 @@ class Catalog:
     
         return alt, az
 
-    def position_vector(self):
-        pass 
+    def position_vector(self, alt, az):
+        '''
+        Calculates the position vector to a source in the sky 
+
+        Parameters: 
+        alt = the altitude of the source from the horizon, given in radians
+        az  = the angle from north, moving towards the east, given in radians
+
+        Returns:
+        vector in cartesian coordinates [x,y,z] as a numpy.ndarray
+        '''
+        x = np.cos(alt) * np.cos(az)
+        y = np.cos(alt) * np.sin(az)
+        z = np.sin(alt)
+        vector = np.asarray([x,y,z])
+        return vector
