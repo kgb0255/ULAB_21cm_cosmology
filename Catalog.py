@@ -1,3 +1,6 @@
+import numpy as np
+from scipy.constants import c
+
 class Catalog():
     
     def __init__(self, df, num, time = np.linspace(0, 2*np.pi, 768), freqs=np.linspace(150, 160, 10)):
@@ -114,13 +117,8 @@ class Catalog():
     def get_flux(self):
         return np.einsum('i, ki->ik', self.k, np.array([np.power(freq, -self.alpha) for freq in self.freqMHz]))
     
-    def getPhase(b):
+    def getPhase(self,b):
         """return an array phase factors with number of row being number of source, 
         number of column being number of freq"""       
-        arr_source = []
-        for s in self.s_vectors:
-            arr_freq = []
-            for freq in self.freqMHz:
-                arr_freq.append(np.exp(-2*np.pi*1.j*freq/spc.c*np.dot(s, b)))
-            arr_source.append(arr_freq)
+        arr_source = np.exp(-2*np.pi*1.0j*np.einsum('k,ijl->ljk', self.freqMHz*1e6/c, np.einsum('ijk, i->ijk',self.s_vectors, b)))
         return arr_source

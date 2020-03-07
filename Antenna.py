@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import scipy.special as sci
 
-def __init__(self, ant_num, position, a=6, sigma_ant=0,  sigma_x=0, sigma_y=0):
+class Ant():
+    def __init__(self, ant_num, position, a=6, sigma_ant=0,  sigma_x=0, sigma_y=0):
         self.ant_num = ant_num
         self.position = position
         self.aperature = a
@@ -17,7 +19,7 @@ def __init__(self, ant_num, position, a=6, sigma_ant=0,  sigma_x=0, sigma_y=0):
     def airy_beam(self, x, y, nu):
         c=3.0*10**8 #speed of light in m/s
         k=2*np.pi*nu/c #wavenumber
-        airy_arg=np.einsum("i,k->ik",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2))
+        airy_arg=np.einsum("k,jl->ljk",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2))
         airy_funct = (2*sci.jv(1,airy_arg)**0.5/(airy_arg)**0.5)**2 #Sci.jv are the bessel functions of the 1st kind
         return airy_funct
 
@@ -30,7 +32,7 @@ def __init__(self, ant_num, position, a=6, sigma_ant=0,  sigma_x=0, sigma_y=0):
         a = 6
         sigma = 1.03*c/(4*a*nu*np.sqrt(2*math.log(2)))
         pos = np.tan(x/y)
-        exponential = np.einsum("i,j->ij",-(pos-mean)**2, 1/(2*sigma**2))
+        exponential = np.einsum("ijk,j->ij",-(pos-mean)**2, 1/(2*sigma**2))
         gaussian= 1/(sigma*(2*np.pi)**0.5)*np.e**exponential #x is source position?
         return gaussian
 
