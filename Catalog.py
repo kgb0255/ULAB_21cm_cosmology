@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.constants import c
 
+
 class Catalog():
     
     def __init__(self, df, num, time = np.linspace(0, 2*np.pi, 768), freqs=np.linspace(150, 160, 10)):
