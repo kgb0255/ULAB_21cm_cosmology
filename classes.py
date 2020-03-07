@@ -12,6 +12,7 @@ class antenna
 '''
 
 import numpy as np
+import pandas as pd
 
 
 class Catalog:
@@ -37,11 +38,8 @@ class Catalog:
         df = frame
         new_frame = [col for col in df.columns if ('int_flux' in col or "RAJ2000" in col or "DEJ2000" in col) and "err" not in col]
         new_frame = frame[new_frame]
-        #self.RA = np.asarray(frame.RAJ2000)
-        #self.DEC = np.asarray(frame.DEJ2000)
 
         star_number = num_stars
-        #new_frame = self.frame
         
         # drop the NaN values that we don't want
         new_frame = new_frame.dropna(axis=0, how="any")
@@ -81,6 +79,7 @@ class Catalog:
 
     def altaz(self, time, rad = True, lat=37.875*np.pi/180):
         """
+        From Max :) 
         Calculates Altitude and Azimuth at given times, centered at HERA
     
         parameters: 
@@ -126,3 +125,26 @@ class Catalog:
         z = np.sin(alt)
         vector = np.asarray([x,y,z])
         return vector
+
+    def phase(self, baseline): # needs a baseline vector 
+        pass#return np.exp(-2*np.pi*1.j*freq/spc.c*np.dot(b, s))
+
+    def kAlpha(self):
+        fluxes = [col for col in self.frame.columns if "flux" in col and "wide" not in col]
+        print(type(self.frame))
+
+    def kAlpha_andrea(self):
+        """return sourcesize * 2 array where each row is one source and the first column is k, second column is a"""
+        frame_just_flux = np.array(self.frame[[col for col in self.frame.keys() if (col[:9]=='int_flux_')]])
+        array = []
+        for source in frame_just_flux:
+            #find alpha
+            flux1 = source[0]
+            flux2 = source[1]
+            v1 = self.freqMHz[0]
+            v2 = self.freqMHz[1]
+            a = np.log(flux1/flux2, v2/v1)
+            #find k
+            k = flux1 / np.pow(v1, a)
+            array.append([k, a])
+        return array
