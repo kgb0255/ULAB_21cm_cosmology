@@ -5,7 +5,7 @@ import scipy.special as sci
 
 
 class Ant():
-    def __init__(self, ant_num, position, a=6, sigma_ant=0,  sigma_x=0, sigma_y=0):
+    def __init__(self, ant_num, position, a=6, sigma_ant=.003,  sigma_x=.005, sigma_y=.005):
         self.ant_num = ant_num
         self.position = position
         self.aperature = a
