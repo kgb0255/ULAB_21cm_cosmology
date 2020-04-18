@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.special as sci
+import math
 
 
 class Ant():
@@ -16,24 +17,29 @@ class Ant():
         self.ys = np.random.normal(0,sigma_y)
         
     def airy_beam(self, x, y, nu):
-        c=3.0*10**8 #speed of light in m/s
+        c=3.0e8 #speed of light in m/s
         k=2*np.pi*nu/c #wavenumber
-        airy_arg=np.einsum("k,jl->ljk",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2))
-        airy_funct = (2*sci.jv(1,airy_arg)**0.5/(airy_arg)**0.5)**2 #Sci.jv are the bessel functions of the 1st kind
+        airy_arg=np.einsum("k,jl->ljk",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2)**.5)
+        airy_funct = (2*sci.jv(1,airy_arg)/(airy_arg))**2 #Sci.jv are the bessel functions of the 1st kind
         return airy_funct
 
     def gaussian_beam(self, x, y, nu, mean = 0):
-        c = 3.*1e8
+        self.x = x
+        self.y = y
+        self.mean = mean
+        self.nu = nu
+        c = 3.0e8
         a = 6
         sigma = 1.03*c/(4*a*nu*np.sqrt(2*np.log(2)))
         pos = np.tan(x/y)
-        exponential = np.einsum("ijk,j->ij",-(pos-mean)**2, 1/(2*sigma**2))
-        gaussian= 1/(sigma*(2*np.pi)**0.5)*np.exp(exponential) #x is source position
+        exponential = np.einsum("ij,k->jik",-(pos-mean)**2, 1/(2*sigma**2))
+        gaussian= 1/(sigma*(2*np.pi)**0.5)*np.e**exponential #x is source position?
+
         return gaussian
 
     def airy2_beam(self, x, y, nu):
-        c=3.0*10**8 #speed of light in m/s
+        c=3.0e8 #speed of light in m/s
         k=2*np.pi*nu/c #wavenumber
-        airy2_arg=np.einsum("i,k->ik",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2))
+        airy2_arg=np.einsum("k,jl->ljk",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2))
         airy2_funct = (2*sci.jve(2,airy2_arg)**0.5/(airy2_arg)**0.5)**2
         return airy2_funct
