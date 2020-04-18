@@ -27,7 +27,11 @@ class Ant():
         self.y = y
         self.mean = mean
         self.nu = nu
+<<<<<<< HEAD
         c = 3.0*1e8
+=======
+        c = 3.*10e8
+>>>>>>> 017149b888f9596e9e64589ace76c76b3b93af55
         a = 6
         sigma = 1.03*c/(4*a*nu*np.sqrt(2*np.log(2)))
         pos = np.tan(x/y)
