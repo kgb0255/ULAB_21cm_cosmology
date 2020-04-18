@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
 import numpy as np
-import math
 import scipy.special as sci
+import math
 
 
 class Ant():
@@ -31,10 +30,11 @@ class Ant():
         self.nu = nu
         c = 3.0e8
         a = 6
-        sigma = 1.03*c/(4*a*nu*np.sqrt(2*math.log(2)))
+        sigma = 1.03*c/(4*a*nu*np.sqrt(2*np.log(2)))
         pos = np.tan(x/y)
         exponential = np.einsum("ij,k->jik",-(pos-mean)**2, 1/(2*sigma**2))
         gaussian= 1/(sigma*(2*np.pi)**0.5)*np.e**exponential #x is source position?
+
         return gaussian
 
     def airy2_beam(self, x, y, nu):
