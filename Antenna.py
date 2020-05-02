@@ -3,6 +3,11 @@ import scipy.special as sci
 import math
 
 
+import numpy as np
+import scipy.special as sci
+import math
+
+
 class Ant():
     def __init__(self, ant_num, position, a=6, sigma_ant=.003,  sigma_x=.005, sigma_y=.005):
         self.ant_num = ant_num
@@ -40,6 +45,6 @@ class Ant():
     def airy2_beam(self, x, y, nu):
         c=3.0e8 #speed of light in m/s
         k=2*np.pi*nu/c #wavenumber
-        airy2_arg=np.einsum("k,jl->ljk",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2))
-        airy2_funct = (2*sci.jve(2,airy2_arg)**0.5/(airy2_arg)**0.5)**2
+        airy2_arg=np.einsum("k,jl->ljk",k,(self.ax**2*(x-self.xs)**2+self.ay**2*(y-self.ys)**2)**.5)
+        airy2_funct = (2*sci.jve(2,airy2_arg)/(airy2_arg))**2
         return airy2_funct
